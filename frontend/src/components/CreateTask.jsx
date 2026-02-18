@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../api';
-import { Plus } from 'lucide-react';
+import { Plus, Sparkles } from 'lucide-react';
 
 const CreateTask = ({ onTaskCreated }) => {
     const [title, setTitle] = useState('');
@@ -25,38 +25,41 @@ const CreateTask = ({ onTaskCreated }) => {
     };
 
     return (
-        <div className="bg-[#121A2A] rounded-xl p-6 mt-6 border border-white/5">
-            <h3 className="text-white font-medium mb-4">Add New Task</h3>
-            <div className="flex gap-4">
-                <div className="flex-1 flex flex-col gap-3">
+        <div className="bg-[#18181b] rounded-[24px] p-1 mt-8 border border-[#27272a] shadow-xl shadow-black/50">
+            <div className="flex flex-col md:flex-row gap-0">
+                <div className="flex-1 p-2">
                     <input
                         type="text"
-                        placeholder="Task title"
+                        placeholder="What's your next task?"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        className="w-full bg-[#0B1220] text-white rounded-lg px-4 py-3 text-sm border border-white/5 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                        className="w-full bg-transparent text-white text-lg font-medium placeholder:text-zinc-600 px-4 py-3 focus:outline-none"
                     />
+                    <div className="border-t border-[#27272a] mx-4"></div>
                     <input
                         type="text"
-                        placeholder="Description (optional)"
+                        placeholder="Add notes or context for AI..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="w-full bg-[#0B1220] text-white rounded-lg px-4 py-3 text-sm border border-white/5 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                        className="w-full bg-transparent text-sm text-zinc-400 placeholder:text-zinc-700 px-4 py-3 focus:outline-none"
                     />
                 </div>
-                <button
-                    onClick={handleSubmit}
-                    disabled={loading}
-                    className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg px-6 py-2 text-sm font-medium transition-colors flex items-center justify-center gap-2 h-fit self-start disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {loading ? 'Adding...' : (
-                        <>
-                            <Plus size={16} />
-                            Add Task
-                        </>
-                    )}
-                </button>
+
+                <div className="p-3 flex items-center justify-end md:border-l border-[#27272a]">
+                    <button
+                        onClick={handleSubmit}
+                        disabled={loading}
+                        className="h-12 w-12 md:h-full md:w-auto md:px-6 bg-white hover:bg-zinc-200 text-black rounded-[20px] font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5 active:scale-95"
+                    >
+                        {loading ? <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div> : (
+                            <>
+                                <Plus size={20} />
+                                <span className="hidden md:inline">Create</span>
+                            </>
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );
