@@ -35,16 +35,29 @@ def create_app():
     app.register_blueprint(tasks_bp)
 
     # Setup logging
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
-    
-    file_handler = logging.handlers.RotatingFileHandler('logs/backend.log', maxBytes=10240, backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
-    ))
-    file_handler.setLevel(logging.INFO)
-    
-    app.logger.addHandler(file_handler)
+    # On Vercel (or if read-only), use StreamHandler (stdout) instead of FileHandler
+    if os.environ.get('VERCEL'):
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(logging.INFO)
+        app.logger.addHandler(stream_handler)
+    else:
+        if not os.path.exists('logs'):
+            try:
+                os.mkdir('logs')
+            except OSError:
+                # If we verify cannot create logs dir (e.g. read-only fs), fallback to stream
+                pass
+        
+        if os.path.exists('logs'):
+            file_handler = logging.handlers.RotatingFileHandler('logs/backend.log', maxBytes=10240, backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+            ))
+            file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
+        else:
+             app.logger.addHandler(logging.StreamHandler())
+
     app.logger.setLevel(logging.INFO)
     app.logger.info('AI Task Manager startup')
     
