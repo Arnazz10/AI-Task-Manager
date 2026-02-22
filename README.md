@@ -16,7 +16,7 @@ Key goals of this project:
 ### Backend (Python)
 - **Framework:** **Flask** (Lightweight, flexible WSGI web application framework).
 - **Database:** **SQLite** with **SQLAlchemy ORM** (Zero-configuration relational database).
-- **Validation:** **Marshmallow** (Object serialization and deserialization library).
+- **Validation:** **Marshmallow** (Object serialization and deserialization library
 - **Testing:** **Pytest** (Scalable testing framework).
 
 ### Frontend (JavaScript)
